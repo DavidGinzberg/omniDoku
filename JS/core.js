@@ -10,7 +10,10 @@ function checkSolution(puzzle, rules){
 	for(var i = 0; i < puzzle.length; i++){
 		temp = {};
 		for(var j = 0; j < puzzle[i].length; j++){
-			if(temp[puzzle[i][j]]){ return false; }
+			for(var k = 0; k < j; k++){
+				if(puzzle[i][j] == puzzle[i][k]){ return false;}
+			}
+			
 		}
 	}
 	
