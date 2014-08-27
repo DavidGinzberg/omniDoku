@@ -22,7 +22,9 @@ function checkSolution(puzzle, rules){
 }
 
 function getRow(puzzle, rowNum){
+	if(true){//triggering gh-pages build. this will be for error checking later.
 	return puzzle[rowNum - 1];
+	}
 }
 
 function getColumn(puzzle, colNum){
