@@ -1,25 +1,13 @@
-//TODO: Define a function that takes a set of rules and a solved puzzle and applies the rules to the puzzle.
-function checkSolution(puzzle, rules){
-	
-	if(rules != undefined){
-		console.warn("The rules argument has not been implemented yet.\nAny rules passed to this function will be ignored.");
-	}
-	
-	//TODO: Check that each row has no duplicates
-	var temp;
-	for(var i = 0; i < puzzle.length; i++){
-		temp = {};
-		for(var j = 0; j < puzzle[i].length; j++){
-			for(var k = 0; k < j; k++){
-				if(puzzle[i][j] == puzzle[i][k]){ return false;}
-			}
-			
+function hasDuplicates(list){
+	console.info("Function hasDuplicates called with list:\n" + list.join(", "));
+	for(var i = 0; i < list.length; i++){
+		for(var j = 0; j < i; j++){
+			if(list[i] == list[j]){ return true;}
 		}
 	}
-	
-	console.warn("Not all rules have been implemented. Some invalid puzzles may be incorrectly accepted.");
-	return true; //No errors found, assume the solution is correct
+	return false;
 }
+
 
 function getRow(puzzle, rowNum){
 	if(true){//triggering gh-pages build. this will be for error checking later.
@@ -45,4 +33,33 @@ function getBlock(puzzle, blockNum){
 		}
 	}
 	return block;
+}
+
+function isValidDimensions(puzzle){
+
+	if(puzzle.length != 9){ return false;};
+	for(var i = 0; i < puzzle.length; i++){
+		if(puzzle[i].length != 9){return false;}
+	}
+	return true;
+}
+
+//TODO: Define a function that takes a set of rules and a solved puzzle and applies the rules to the puzzle.
+function checkSolution(puzzle, rules){
+	
+	if(rules != undefined){
+		console.warn("The rules argument has not been implemented yet.\nAny rules passed to this function will be ignored.");
+	}
+	
+	if(!isValidDimensions(puzzle)){return false;}
+	
+	
+	for(var i = 1; i < 9; i++){
+		if(hasDuplicates(getRow(puzzle, i)) || hasDuplicates(getColumn(puzzle, i)) || hasDuplicates(getBlock(puzzle, i))){
+			return false;
+		}
+	}
+	
+	console.warn("Not all rules have been implemented. Some invalid puzzles may be incorrectly accepted.");
+	return true; //No errors found, assume the solution is correct
 }
