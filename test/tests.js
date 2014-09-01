@@ -91,58 +91,100 @@ QUnit.module("Unit Tests: Rule Functions", {
 									[ , , , , , , , , ],
 									[ , , , , , , , , ],
 									[ , , , , , , , , ]];
+			
+			this.tinyPuzzleValidNumbers = [ [1, 2],[3,4]];
+			//"OOB" stands for "Out Of Bounds" ... Just FYI :D
+			this.tinyOOBPuzzle = [ [1, 2], [3, 42]];
+			this.tinyPuzzleWithZero = [ [0, 1], [2, 3]];
+			this.noPuzzle = [];
 		},
 		teardown:	function(){
 		
 		}
 	});
 QUnit.test( "Rule: Puzzle is 9x9", function( assert ) {
-
-	assert.equal(ruleIsNineByNine(this.validPuzzle), true, "Valid puzzle should pass the \"Puzzle must be 9x9\" rule");
-	assert.equal(ruleIsNineByNine(this.badRowPuzzle), true, "Puzzle with errors in a row but the correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
-	assert.equal(ruleIsNineByNine(this.badColPuzzle), true, "Puzzle with errors in a column but the correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
-	assert.equal(ruleIsNineByNine(this.nonSquarePuzzle), false, "A puzzle with incorrect dimensions should fail the \"Puzzle must be 9x9\" rule");
-	assert.equal(ruleIsNineByNine(this.blankPuzzle), true, "A blank puzzle with correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
+	var ruleUnderTest = ruleIsNineByNine;
+	
+	//Well-formed puzzle grids:
+	assert.equal(ruleUnderTest(this.validPuzzle), true, "Valid puzzle should pass the \"Puzzle must be 9x9\" rule");
+	assert.equal(ruleUnderTest(this.badRowPuzzle), true, "Puzzle with errors in a row but the correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
+	assert.equal(ruleUnderTest(this.badColPuzzle), true, "Puzzle with errors in a column but the correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
+	assert.equal(ruleUnderTest(this.blankPuzzle), true, "A blank puzzle with correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
+	
+	assert.equal(ruleUnderTest(this.nonSquarePuzzle), false, "A puzzle with incorrect dimensions should fail the \"Puzzle must be 9x9\" rule");
+	assert.equal(ruleUnderTest(this.tinyPuzzleValidNumbers), false, "A 4x4 puzzle will not pass the \"Puzzle must be 9x9\" rule.");
+	assert.equal(ruleUnderTest(this.tinyOOBPuzzle), false, "A 4x4 puzzle will not pass the \"Puzzle must be 9x9\" rule.");
+	assert.equal(ruleUnderTest(this.tinyPuzzleWithZero), false, "A 4x4 puzzle will not pass the \"Puzzle must be 9x9\" rule.");
+	assert.equal(ruleUnderTest(this.noPuzzle), false, "Undefined puzzles should fail to pass the \"Puzzle must be 9x9\" rule.");
 });
 	
 	QUnit.test( "Rule: Puzzle Contains only numbers 1-9", function( assert ) {
-	assert.equal(ruleOnlyNumbersOneThroughNine(this.validPuzzle), true, "");
-	assert.equal(ruleOnlyNumbersOneThroughNine(this.badRowPuzzle), true, "");
-	assert.equal(ruleOnlyNumbersOneThroughNine(this.badColPuzzle), true, "");
-	assert.equal(ruleOnlyNumbersOneThroughNine(this.nonSquarePuzzle), true, "");
-	assert.equal(ruleOnlyNumbersOneThroughNine(this.blankPuzzle), true, "");
+	
+	var ruleUnderTest = ruleOnlyNumbersOneThroughNine;
+	
+	//Well-formed puzzle grids:
+	assert.equal(ruleUnderTest(this.validPuzzle), true, "A valid 9x9 puzzle with all correct numbers should pass this rule.");
+	assert.equal(ruleUnderTest(this.badRowPuzzle), true, "Puzzles with duplicate valid numbers in a row should still pass this rule");
+	assert.equal(ruleUnderTest(this.badColPuzzle), true, "Puzzles with duplicate valid numbers in a column should still pass this rule.");
+	assert.equal(ruleUnderTest(this.blankPuzzle), true, "Blank puzzles, by definition, do not contain any out-of-bounds numbers. Should pass this rule.");
+	assert.equal(ruleUnderTest(this.nonSquarePuzzle), true, "A non-square puzzle without any OOB numbers should still pass this rule.");
+	
+	assert.equal(ruleUnderTest(this.tinyPuzzleValidNumbers), true, "Puzzles with only numbers between 1 and 9 (inclusive) should pass this rule.");
+	assert.equal(ruleUnderTest(this.tinyOOBPuzzle), false, "Puzzles with numbers greater than 9 should fail this rule");
+	assert.equal(ruleUnderTest(this.tinyPuzzleWithZero), false, "Puzzles with numbers less than 1 should fail this rule");
+	assert.equal(ruleUnderTest(this.noPuzzle), true, "Undefined puzzles do not contain any OOB numbers/characters. Pass.");
 });
 	
 	QUnit.test( "Rule: Puzzle rows all have numbers 1-9", function( assert ) {
-	assert.equal(ruleRowsHaveOneThroughNine(this.validPuzzle), true, "");
-	assert.equal(ruleRowsHaveOneThroughNine(this.badRowPuzzle), true, "");
-	assert.equal(ruleRowsHaveOneThroughNine(this.badColPuzzle), true, "");
-	assert.equal(ruleRowsHaveOneThroughNine(this.nonSquarePuzzle), false, "");
-	assert.equal(ruleRowsHaveOneThroughNine(this.blankPuzzle), false, "");
+	var ruleUnderTest = ruleRowsHaveOneThroughNine;
+	
+	//Well-formed puzzle grids:
+	assert.equal(ruleUnderTest(this.validPuzzle), true, "A valid puzzle should have all numbers 1-9 in every row.");
+	assert.equal(ruleUnderTest(this.badRowPuzzle), false, "A puzzle with incorrect rows missing at least one number in [1-9] should fail.");
+	assert.equal(ruleUnderTest(this.badColPuzzle), true, "A puzzle with incorrect columns but rows that still contain all numbers in [1-9] should pass");
+	assert.equal(ruleUnderTest(this.blankPuzzle), false, "Blank rows, by definition, lack the numbers 1-9. This puzzle does not pass the rule.");
+
+	assert.equal(ruleUnderTest(this.nonSquarePuzzle), false, "A 9x9 puzzle missing at least one cell can't possibly have all 9 numbers in every row. Should fail.");
+	assert.equal(ruleUnderTest(this.noPuzzle), false, "Undefined puzzles lack all numbers 1-9. Fail."); //Is this right? the numbers are missing...but so are the rows and columns...
 });
 	
 	QUnit.test( "Rule: Puzzle columns all have numbers 1-9", function( assert ) {
-	assert.equal(ruleColsHaveOneThroughNine(this.validPuzzle), true, "");
-	assert.equal(ruleColsHaveOneThroughNine(this.badRowPuzzle), true, "");
-	assert.equal(ruleColsHaveOneThroughNine(this.badColPuzzle), true, "");
-	assert.equal(ruleColsHaveOneThroughNine(this.nonSquarePuzzle), true, "");
-	assert.equal(ruleColsHaveOneThroughNine(this.blankPuzzle), false, "");
+	var ruleUnderTest = ruleColsHaveOneThroughNine;
+	
+	//Well-formed puzzle grids:
+	assert.equal(ruleUnderTest(this.validPuzzle), true, "Valid puzzles should have all numbers 1-9 in every column.");
+	assert.equal(ruleUnderTest(this.badRowPuzzle), true, "A puzzle with incorrect rows but columns that still contain all numbers in [1-9] should pass");
+	assert.equal(ruleUnderTest(this.badColPuzzle), true, "A puzzle with incorrect columns missing at least one number in [1-9] should fail.");
+	assert.equal(ruleUnderTest(this.blankPuzzle), false, "Blank columns, by definition, lack the numbers 1-9. This puzzle does not pass the rule");
+
+	assert.equal(ruleUnderTest(this.nonSquarePuzzle), false, "A 9x9 puzzle missing at least one cell can't possibly have all 9 numbers in every column. Should fail.");
+	assert.equal(ruleUnderTest(this.noPuzzle), false, "Undefined puzzles lack all numbers 1-9. Fail."); //Is this right? the numbers are missing...but so are the rows and columns...
 });
 	
 	QUnit.test( "Rule: Puzzle rows do not contain duplicate numbers", function( assert ) {
-	assert.equal(ruleNoDuplicatesInRow(this.validPuzzle), true, "");
-	assert.equal(ruleNoDuplicatesInRow(this.badRowPuzzle), false, "");
-	assert.equal(ruleNoDuplicatesInRow(this.badColPuzzle), true, "");
-	assert.equal(ruleNoDuplicatesInRow(this.nonSquarePuzzle), true, "");
-	assert.equal(ruleNoDuplicatesInRow(this.blankPuzzle), true, "");
+	var ruleUnderTest = ruleNoDuplicatesInRow;
+	
+	//Well-formed puzzle grids:
+	assert.equal(ruleUnderTest(this.validPuzzle), true, "Valid puzzles should have no duplicates in rows or columns and should pass both rules.");
+	assert.equal(ruleUnderTest(this.badRowPuzzle), false, "A row containing one or more duplicate numbers violates this rule.");
+	assert.equal(ruleUnderTest(this.badColPuzzle), true, "A puzzle with mistakes in columns but no duplicates in any row should pass this rule.");
+	assert.equal(ruleUnderTest(this.blankPuzzle), true, "Blank cells do not count toward duplicates. pass");
+
+	assert.equal(ruleUnderTest(this.nonSquarePuzzle), true, "Misshapen puzzles with no duplicates in a row still pass this rule.");
+	assert.equal(ruleUnderTest(this.noPuzzle), true, "Undefined puzzles lack numbers, and thus duplicates. Pass.");
 });
 	
 	QUnit.test( "Rule: Puzzle columns do not contain duplicate numbers", function( assert ) {
-	assert.equal(ruleNoDuplicatesInColumn(this.validPuzzle), true, "");
-	assert.equal(ruleNoDuplicatesInColumn(this.badRowPuzzle), true, "");
-	assert.equal(ruleNoDuplicatesInColumn(this.badColPuzzle), false, "");
-	assert.equal(ruleNoDuplicatesInColumn(this.nonSquarePuzzle), true, "");
-	assert.equal(ruleNoDuplicatesInColumn(this.blankPuzzle), true, "");
+	var ruleUnderTest = ruleNoDuplicatesInColumn;
+	
+	//Well-formed puzzle grids:
+	assert.equal(ruleUnderTest(this.validPuzzle), true, "Valid puzzles should have no duplicates in rows or columns and should pass both rules.");
+	assert.equal(ruleUnderTest(this.badRowPuzzle), true, "A puzzle with mistakes in rows but no duplicates in any column should pass this rule.");
+	assert.equal(ruleUnderTest(this.badColPuzzle), false, "A column containing one or more duplicate numbers violates this rule.");
+	assert.equal(ruleUnderTest(this.blankPuzzle), true, "Blank cells do not count toward duplicates. Pass");
+
+	assert.equal(ruleUnderTest(this.nonSquarePuzzle), true, "Misshapen puzzles with no duplicates in a column still pass this rule.");
+	assert.equal(ruleUnderTest(this.noPuzzle), true, "Undefined puzzles lack numbers, and thus duplicates. Pass");
 });
 
 QUnit.module("Integration Tests");
