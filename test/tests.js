@@ -20,8 +20,8 @@ QUnit.test( "Accessors", function( assert ) {
 	assert.deepEqual(getRow(validPuzzle, 3), row3, "Function getRow(puzzle, 3) must return the third row of the given puzzle.");
 	assert.deepEqual(getColumn(validPuzzle, 1), col1, "Function getColumn(puzzle, 1) must return the first column of the given puzzle.");
 	assert.deepEqual(getColumn(validPuzzle, 5), col5, "Function getColumn(puzzle, 5) must return the fifth column of the given puzzle.");
-	assert.deepEqual(getBlock(validPuzzle, 1), blk1, "Function getRow(puzzle, 3) must return the first block of the given puzzle.");
-	assert.deepEqual(getBlock(validPuzzle, 9), blk9, "Function getRow(puzzle, 3) must return the ninth block of the given puzzle.");
+	assert.deepEqual(getBlock(validPuzzle, 1), blk1, "Function getBlock(puzzle, 1) must return the first block of the given puzzle.");
+	assert.deepEqual(getBlock(validPuzzle, 9), blk9, "Function getBlock(puzzle, 9) must return the ninth block of the given puzzle.");
 });
 
 QUnit.test( "Utility Functions", function( assert ) {
