@@ -63,3 +63,33 @@ function checkSolution(puzzle, rules){
 	console.warn("Not all rules have been implemented. Some invalid puzzles may be incorrectly accepted.");
 	return true; //No errors found, assume the solution is correct
 }
+
+/* Begin rule function definitions. */
+function ruleIsNineByNine(puzzle){
+	console.warn("Function ruleIsNineByNine() has not been implemented yet");
+	return true;
+}
+
+function ruleOnlyNumbersOneThroughNine(puzzle){
+	console.warn("Function ruleOnlyNumbersOneThroughNine() has not been implemented yet");
+	return true;
+}
+function ruleRowsHaveOneThroughNine(puzzle){
+	console.warn("Function ruleRowsHaveOneThroughNine() has not been implemented yet");
+	return true;
+}
+
+function ruleColsHaveOneThroughNine(puzzle){
+	console.warn("Function ruleColsHaveOneThroughNine() has not been implemented yet");
+	return true;
+}
+
+function ruleNoDuplicatesInRow(puzzle){
+	console.warn("Function ruleNoDuplicatesInRow() has not been implemented yet");
+	return true;
+}
+
+function ruleNoDuplicatesInColumn(puzzle){
+	console.warn("Function ruleNoDuplicatesInColumn() has not been implemented yet");
+	return true;
+}
