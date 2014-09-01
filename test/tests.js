@@ -36,89 +36,113 @@ QUnit.test( "Utility Functions", function( assert ) {
 	
 });
 
-QUnit.test( "Rule Functions", function( assert ) {
-	var validPuzzle = [	[6, 2, 4, 7, 8, 9, 1, 5, 3],
-						[5, 8, 9, 1, 3, 6, 4, 2, 7],
-						[3, 1, 7, 2, 4, 5, 8, 6, 9],
-						[7, 6, 1, 5, 9, 4, 3, 8, 2],
-						[2, 3, 5, 8, 1, 7, 6, 9, 4],
-						[4, 9, 8, 6, 2, 3, 7, 1, 5],
-						[1, 4, 2, 3, 5, 8, 9, 7, 6],
-						[8, 7, 3, 9, 6, 2, 5, 4, 1],
-						[9, 5, 6, 4, 7, 1, 2, 3, 8]];
-	var badRowPuzzle =[	[3, 2, 4, 7, 8, 9, 1, 5, 3],
-						[5, 8, 9, 1, 3, 6, 4, 2, 7],
-						[6, 1, 7, 2, 4, 5, 8, 6, 9],
-						[7, 6, 1, 5, 9, 4, 3, 8, 2],
-						[2, 3, 5, 8, 1, 7, 6, 9, 4],
-						[4, 9, 8, 6, 2, 3, 7, 1, 5],
-						[1, 4, 2, 3, 5, 8, 9, 7, 6],
-						[8, 7, 3, 9, 6, 2, 5, 4, 1],
-						[9, 5, 6, 4, 7, 1, 2, 3, 8]];
-	var badColPuzzle =[	[4, 2, 6, 7, 8, 9, 1, 5, 3],
-						[5, 8, 9, 1, 3, 6, 4, 2, 7],
-						[3, 1, 7, 2, 4, 5, 8, 6, 9],
-						[7, 6, 1, 5, 9, 4, 3, 8, 2],
-						[2, 3, 5, 8, 1, 7, 6, 9, 4],
-						[4, 9, 8, 6, 2, 3, 7, 1, 5],
-						[1, 4, 2, 3, 5, 8, 9, 7, 6],
-						[8, 7, 3, 9, 6, 2, 5, 4, 1],
-						[9, 5, 6, 4, 7, 1, 2, 3, 8]];
-	var nonSquarePuzzle = [	[6, 2, 4, 7, 8, 9, 1, 5, 3],
-							[5, 8, 9, 1, 3, 6, 4, 2, 7],
-							[3, 1, 7, 2, 4, 5, 8, 6, 9],
-							[7, 6, 1, 5, 9, 4, 3, 8, 2],
-							[2, 3, 5, 8, 1, 7, 6, 9, 4],
-							[4, 9, 8, 6, 2, 3, 7, 1, 5],
-							[1, 4, 2, 3, 5, 8, 9, 7, 6],
-							[8, 7, 3, 9, 6, 2, 5, 4, 1],
-							[9, 5, 6, 4, 7, 1, 2, 3]];
-	//Empty elements should not be considered duplicate of each other.
-	//This seems counter-intuitive in the solution-checker portion, but will be
-	//an important distinction in the puzzle-solver portion of this project
-	var blankPuzzle = [	[ , , , , , , , , ],
-						[ , , , , , , , , ],
-						[ , , , , , , , , ],
-						[ , , , , , , , , ],
-						[ , , , , , , , , ],
-						[ , , , , , , , , ],
-						[ , , , , , , , , ],
-						[ , , , , , , , , ],
-						[ , , , , , , , , ]];
-	assert.equal(ruleIsNineByNine(validPuzzle), true, "Valid puzzle should pass the \"Puzzle must be 9x9\" rule");
-	assert.equal(ruleIsNineByNine(badRowPuzzle), true, "Puzzle with errors in a row but the correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
-	assert.equal(ruleIsNineByNine(badColPuzzle), true, "Puzzle with errors in a column but the correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
-	assert.equal(ruleIsNineByNine(nonSquarePuzzle), false, "A puzzle with incorrect dimensions should fail the \"Puzzle must be 9x9\" rule");
-	assert.equal(ruleIsNineByNine(blankPuzzle), true, "A blank puzzle with correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
+QUnit.module("Unit Tests: Rule Functions", {
+		//define properties used by all tests in this module
+		setup:	function(){
+			this.validPuzzle = [	[6, 2, 4, 7, 8, 9, 1, 5, 3],
+									[5, 8, 9, 1, 3, 6, 4, 2, 7],
+									[3, 1, 7, 2, 4, 5, 8, 6, 9],
+									[7, 6, 1, 5, 9, 4, 3, 8, 2],
+									[2, 3, 5, 8, 1, 7, 6, 9, 4],
+									[4, 9, 8, 6, 2, 3, 7, 1, 5],
+									[1, 4, 2, 3, 5, 8, 9, 7, 6],
+									[8, 7, 3, 9, 6, 2, 5, 4, 1],
+									[9, 5, 6, 4, 7, 1, 2, 3, 8]];
+
+			this.badRowPuzzle =[	[3, 2, 4, 7, 8, 9, 1, 5, 3],
+									[5, 8, 9, 1, 3, 6, 4, 2, 7],
+									[6, 1, 7, 2, 4, 5, 8, 6, 9],
+									[7, 6, 1, 5, 9, 4, 3, 8, 2],
+									[2, 3, 5, 8, 1, 7, 6, 9, 4],
+									[4, 9, 8, 6, 2, 3, 7, 1, 5],
+									[1, 4, 2, 3, 5, 8, 9, 7, 6],
+									[8, 7, 3, 9, 6, 2, 5, 4, 1],
+									[9, 5, 6, 4, 7, 1, 2, 3, 8]];
+
+			this.badColPuzzle =[	[4, 2, 6, 7, 8, 9, 1, 5, 3],
+									[5, 8, 9, 1, 3, 6, 4, 2, 7],
+									[3, 1, 7, 2, 4, 5, 8, 6, 9],
+									[7, 6, 1, 5, 9, 4, 3, 8, 2],
+									[2, 3, 5, 8, 1, 7, 6, 9, 4],
+									[4, 9, 8, 6, 2, 3, 7, 1, 5],
+									[1, 4, 2, 3, 5, 8, 9, 7, 6],
+									[8, 7, 3, 9, 6, 2, 5, 4, 1],
+									[9, 5, 6, 4, 7, 1, 2, 3, 8]];
+
+			this.nonSquarePuzzle =[	[6, 2, 4, 7, 8, 9, 1, 5, 3],
+									[5, 8, 9, 1, 3, 6, 4, 2, 7],
+									[3, 1, 7, 2, 4, 5, 8, 6, 9],
+									[7, 6, 1, 5, 9, 4, 3, 8, 2],
+									[2, 3, 5, 8, 1, 7, 6, 9, 4],
+									[4, 9, 8, 6, 2, 3, 7, 1, 5],
+									[1, 4, 2, 3, 5, 8, 9, 7, 6],
+									[8, 7, 3, 9, 6, 2, 5, 4, 1],
+									[9, 5, 6, 4, 7, 1, 2, 3]];
+									
+			//Empty elements should not be considered duplicate of each other.
+			//This seems counter-intuitive in the solution-checker portion, but will be
+			//an important distinction in the puzzle-solver portion of this project
+			this.blankPuzzle = [	[ , , , , , , , , ],
+									[ , , , , , , , , ],
+									[ , , , , , , , , ],
+									[ , , , , , , , , ],
+									[ , , , , , , , , ],
+									[ , , , , , , , , ],
+									[ , , , , , , , , ],
+									[ , , , , , , , , ],
+									[ , , , , , , , , ]];
+		},
+		teardown:	function(){
+		
+		}
+	});
+QUnit.test( "Rule: Puzzle is 9x9", function( assert ) {
+
+	assert.equal(ruleIsNineByNine(this.validPuzzle), true, "Valid puzzle should pass the \"Puzzle must be 9x9\" rule");
+	assert.equal(ruleIsNineByNine(this.badRowPuzzle), true, "Puzzle with errors in a row but the correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
+	assert.equal(ruleIsNineByNine(this.badColPuzzle), true, "Puzzle with errors in a column but the correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
+	assert.equal(ruleIsNineByNine(this.nonSquarePuzzle), false, "A puzzle with incorrect dimensions should fail the \"Puzzle must be 9x9\" rule");
+	assert.equal(ruleIsNineByNine(this.blankPuzzle), true, "A blank puzzle with correct dimensions should still pass the \"Puzzle must be 9x9\" rule");
+});
 	
-	assert.equal(ruleOnlyNumbersOneThroughNine(validPuzzle), true, "");
-	assert.equal(ruleOnlyNumbersOneThroughNine(badRowPuzzle), true, "");
-	assert.equal(ruleOnlyNumbersOneThroughNine(badColPuzzle), true, "");
-	assert.equal(ruleOnlyNumbersOneThroughNine(nonSquarePuzzle), true, "");
-	assert.equal(ruleOnlyNumbersOneThroughNine(blankPuzzle), true, "");
+	QUnit.test( "Rule: Puzzle Contains only numbers 1-9", function( assert ) {
+	assert.equal(ruleOnlyNumbersOneThroughNine(this.validPuzzle), true, "");
+	assert.equal(ruleOnlyNumbersOneThroughNine(this.badRowPuzzle), true, "");
+	assert.equal(ruleOnlyNumbersOneThroughNine(this.badColPuzzle), true, "");
+	assert.equal(ruleOnlyNumbersOneThroughNine(this.nonSquarePuzzle), true, "");
+	assert.equal(ruleOnlyNumbersOneThroughNine(this.blankPuzzle), true, "");
+});
 	
-	assert.equal(ruleRowsHaveOneThroughNine(validPuzzle), true, "");
-	assert.equal(ruleRowsHaveOneThroughNine(badRowPuzzle), true, "");
-	assert.equal(ruleRowsHaveOneThroughNine(badColPuzzle), true, "");
-	assert.equal(ruleRowsHaveOneThroughNine(nonSquarePuzzle), false, "");
-	assert.equal(ruleRowsHaveOneThroughNine(blankPuzzle), false, "");
+	QUnit.test( "Rule: Puzzle rows all have numbers 1-9", function( assert ) {
+	assert.equal(ruleRowsHaveOneThroughNine(this.validPuzzle), true, "");
+	assert.equal(ruleRowsHaveOneThroughNine(this.badRowPuzzle), true, "");
+	assert.equal(ruleRowsHaveOneThroughNine(this.badColPuzzle), true, "");
+	assert.equal(ruleRowsHaveOneThroughNine(this.nonSquarePuzzle), false, "");
+	assert.equal(ruleRowsHaveOneThroughNine(this.blankPuzzle), false, "");
+});
 	
-	assert.equal(ruleColsHaveOneThroughNine(validPuzzle), true, "");
-	assert.equal(ruleColsHaveOneThroughNine(badRowPuzzle), true, "");
-	assert.equal(ruleColsHaveOneThroughNine(badColPuzzle), true, "");
-	assert.equal(ruleColsHaveOneThroughNine(nonSquarePuzzle), true, "");
-	assert.equal(ruleColsHaveOneThroughNine(blankPuzzle), false, "");
+	QUnit.test( "Rule: Puzzle columns all have numbers 1-9", function( assert ) {
+	assert.equal(ruleColsHaveOneThroughNine(this.validPuzzle), true, "");
+	assert.equal(ruleColsHaveOneThroughNine(this.badRowPuzzle), true, "");
+	assert.equal(ruleColsHaveOneThroughNine(this.badColPuzzle), true, "");
+	assert.equal(ruleColsHaveOneThroughNine(this.nonSquarePuzzle), true, "");
+	assert.equal(ruleColsHaveOneThroughNine(this.blankPuzzle), false, "");
+});
 	
-	assert.equal(ruleNoDuplicatesInRow(validPuzzle), true, "");
-	assert.equal(ruleNoDuplicatesInRow(badRowPuzzle), false, "");
-	assert.equal(ruleNoDuplicatesInRow(badColPuzzle), true, "");
-	assert.equal(ruleNoDuplicatesInRow(nonSquarePuzzle), true, "");
-	assert.equal(ruleNoDuplicatesInRow(nonSquarePuzzle), true, "");
+	QUnit.test( "Rule: Puzzle rows do not contain duplicate numbers", function( assert ) {
+	assert.equal(ruleNoDuplicatesInRow(this.validPuzzle), true, "");
+	assert.equal(ruleNoDuplicatesInRow(this.badRowPuzzle), false, "");
+	assert.equal(ruleNoDuplicatesInRow(this.badColPuzzle), true, "");
+	assert.equal(ruleNoDuplicatesInRow(this.nonSquarePuzzle), true, "");
+	assert.equal(ruleNoDuplicatesInRow(this.blankPuzzle), true, "");
+});
 	
-	assert.equal(ruleNoDuplicatesInColumn(validPuzzle), true, "");
-	assert.equal(ruleNoDuplicatesInColumn(badRowPuzzle), true, "");
-	assert.equal(ruleNoDuplicatesInColumn(badColPuzzle), false, "");
-	assert.equal(ruleNoDuplicatesInColumn(nonSquarePuzzle), true, "");
+	QUnit.test( "Rule: Puzzle columns do not contain duplicate numbers", function( assert ) {
+	assert.equal(ruleNoDuplicatesInColumn(this.validPuzzle), true, "");
+	assert.equal(ruleNoDuplicatesInColumn(this.badRowPuzzle), true, "");
+	assert.equal(ruleNoDuplicatesInColumn(this.badColPuzzle), false, "");
+	assert.equal(ruleNoDuplicatesInColumn(this.nonSquarePuzzle), true, "");
+	assert.equal(ruleNoDuplicatesInColumn(this.blankPuzzle), true, "");
 });
 
 QUnit.module("Integration Tests");
