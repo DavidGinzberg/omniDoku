@@ -82,15 +82,17 @@ QUnit.module("Unit Tests: Rule Functions", {
 			//Empty elements should not be considered duplicate of each other.
 			//This seems counter-intuitive in the solution-checker portion, but will be
 			//an important distinction in the puzzle-solver portion of this project
-			this.blankPuzzle = [	[ , , , , , , , , ],
-									[ , , , , , , , , ],
-									[ , , , , , , , , ],
-									[ , , , , , , , , ],
-									[ , , , , , , , , ],
-									[ , , , , , , , , ],
-									[ , , , , , , , , ],
-									[ , , , , , , , , ],
-									[ , , , , , , , , ]];
+			//TODO: Change the puzzle representation from an Array to something else. the 
+			//  trailing comma behavior in JS makes this confusing (notice there are 9 ,'s)
+			this.blankPuzzle = [	[ , , , , , , , , ,],
+									[ , , , , , , , , ,],
+									[ , , , , , , , , ,],
+									[ , , , , , , , , ,],
+									[ , , , , , , , , ,],
+									[ , , , , , , , , ,],
+									[ , , , , , , , , ,],
+									[ , , , , , , , , ,],
+									[ , , , , , , , , ,]];
 			
 			this.tinyPuzzleValidNumbers = [ [1, 2],[3,4]];
 			//"OOB" stands for "Out Of Bounds" ... Just FYI :D
