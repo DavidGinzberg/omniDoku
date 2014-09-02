@@ -64,10 +64,22 @@ function checkSolution(puzzle, rules){
 	return true; //No errors found, assume the solution is correct
 }
 
-/* Begin rule function definitions. */
+function isSquare(puzzle){
+	var width = puzzle.length;
+	if( width == 0 ){return true;}
+	for(var i = 0; i < width; i++){
+		if(puzzle[i].length != width){ return false;}
+	}
+	return true;
+}
+
+/* BEGIN rule function definitions. */
 function ruleIsNineByNine(puzzle){
 	console.warn("Function ruleIsNineByNine() has not been implemented yet");
-	return true;
+	if(isSquare(puzzle) && puzzle.length == 9 && puzzle[0].length == 9){
+		return true;
+	}
+	return false;
 }
 
 function ruleOnlyNumbersOneThroughNine(puzzle){
@@ -93,3 +105,4 @@ function ruleNoDuplicatesInColumn(puzzle){
 	console.warn("Function ruleNoDuplicatesInColumn() has not been implemented yet");
 	return true;
 }
+/* END rule function definitions */
