@@ -90,13 +90,28 @@ function ruleOnlyNumbersOneThroughNine(puzzle){
 	}
 	return true;
 }
+
+/* Helper function checks a set/collection of numbers
+ * and returns true if it contains all numbers 1-9;
+ * false otherwise.
+ */
+function hasOneThroughNine(numSet){
+	for(var i = 1; i <=9; i++){
+		if(numSet.indexOf(i) == -1){return false;}
+	}
+	return true;
+}
+
 function ruleRowsHaveOneThroughNine(puzzle){
-	var currentRow;
+	//var currentRow;
 	for(var i = 1; i <= 9; i++){
-		currentRow = getRow(puzzle, i);
+		if(!hasOneThroughNine(getRow(puzzle, i))){
+			return false;
+		}
+		/*currentRow = getRow(puzzle, i);
 		for(var j = 1; j <=9; j++){
 			if(currentRow.indexOf(j) == -1){return false;}
-		}
+		}*/
 	}
 	console.warn("Function ruleRowsHaveOneThroughNine() may not be fully implemented yet.");
 	return true;
