@@ -91,7 +91,14 @@ function ruleOnlyNumbersOneThroughNine(puzzle){
 	return true;
 }
 function ruleRowsHaveOneThroughNine(puzzle){
-	console.warn("Function ruleRowsHaveOneThroughNine() has not been implemented yet");
+	var currentRow;
+	for(var i = 1; i <= 9; i++){
+		currentRow = getRow(puzzle, i);
+		for(var j = 1; j <=9; j++){
+			if(currentRow.indexOf[j] == -1){return false;}
+		}
+	}
+	console.warn("Function ruleRowsHaveOneThroughNine() may not be fully implemented yet.");
 	return true;
 }
 
