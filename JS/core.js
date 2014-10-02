@@ -145,7 +145,6 @@ function ruleNoDuplicatesInColumn(puzzle){
 	getCols(puzzle).forEach(function(entry){
 		if(hasDuplicates(entry)) pass = false;
 	});
-	console.warn("Function ruleNoDuplicatesInColumn() is not yet fully implemented.");
 	return pass;
 }
 /* END rule function definitions */
