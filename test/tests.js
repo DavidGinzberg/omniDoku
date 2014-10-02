@@ -156,7 +156,7 @@ QUnit.test( "Rule: Puzzle is 9x9", function( assert ) {
 	//Well-formed puzzle grids:
 	assert.equal(ruleUnderTest(this.validPuzzle), true, "Valid puzzles should have all numbers 1-9 in every column.");
 	assert.equal(ruleUnderTest(this.badRowPuzzle), true, "A puzzle with incorrect rows but columns that still contain all numbers in [1-9] should pass");
-	assert.equal(ruleUnderTest(this.badColPuzzle), true, "A puzzle with incorrect columns missing at least one number in [1-9] should fail.");
+	assert.equal(ruleUnderTest(this.badColPuzzle), false, "A puzzle with incorrect columns missing at least one number in [1-9] should fail.");
 	assert.equal(ruleUnderTest(this.blankPuzzle), false, "Blank columns, by definition, lack the numbers 1-9. This puzzle does not pass the rule");
 
 	assert.equal(ruleUnderTest(this.nonSquarePuzzle), false, "A 9x9 puzzle missing at least one cell can't possibly have all 9 numbers in every column. Should fail.");
