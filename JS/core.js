@@ -96,6 +96,7 @@ function ruleOnlyNumbersOneThroughNine(puzzle){
  * false otherwise.
  */
 function hasOneThroughNine(numSet){
+	if(numSet == undefined){ return false;}
 	for(var i = 1; i <=9; i++){
 		if(numSet.indexOf(i) == -1){return false;}
 	}
@@ -103,17 +104,11 @@ function hasOneThroughNine(numSet){
 }
 
 function ruleRowsHaveOneThroughNine(puzzle){
-	//var currentRow;
 	for(var i = 1; i <= 9; i++){
 		if(!hasOneThroughNine(getRow(puzzle, i))){
 			return false;
 		}
-		/*currentRow = getRow(puzzle, i);
-		for(var j = 1; j <=9; j++){
-			if(currentRow.indexOf(j) == -1){return false;}
-		}*/
 	}
-	console.warn("Function ruleRowsHaveOneThroughNine() may not be fully implemented yet.");
 	return true;
 }
 
