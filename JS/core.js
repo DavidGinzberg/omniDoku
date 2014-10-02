@@ -113,7 +113,11 @@ function ruleRowsHaveOneThroughNine(puzzle){
 }
 
 function ruleColsHaveOneThroughNine(puzzle){
-	console.warn("Function ruleColsHaveOneThroughNine() has not been implemented yet");
+	for(var i = 1; i <= 9; i++){
+		if(!hasOneThroughNine(getColumn(puzzle, i))){
+			return false;
+		}
+	}
 	return true;
 }
 
