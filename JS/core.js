@@ -1,6 +1,10 @@
 function hasDuplicates(list){
 	console.info("Function hasDuplicates called with list:\n" + list.join(", "));
 	for(var i = 0; i < list.length; i++){
+		if(list[i] === undefined) {
+			console.debug("Found blank cell at index" + i);
+			continue;
+		}
 		for(var j = 0; j < i; j++){
 			if(list[i] == list[j]){ return true;}
 		}
@@ -10,9 +14,7 @@ function hasDuplicates(list){
 
 
 function getRow(puzzle, rowNum){
-	if(true){//triggering gh-pages build. this will be for error checking later.
 	return puzzle[rowNum - 1];
-	}
 }
 
 function getColumn(puzzle, colNum){
@@ -21,6 +23,15 @@ function getColumn(puzzle, colNum){
 		column.push(puzzle[i][colNum - 1]);
 	}
 	return column;
+}
+
+function getCols(puzzle){
+	if(puzzle.length == 0) return puzzle;
+	var colList = [];
+	for(var i = 1; i <= puzzle[0].length; i++){
+		colList.push(getColumn(puzzle, i));
+	}
+	return colList;
 }
 
 function getBlock(puzzle, blockNum){
@@ -122,12 +133,19 @@ function ruleColsHaveOneThroughNine(puzzle){
 }
 
 function ruleNoDuplicatesInRow(puzzle){
-	console.warn("Function ruleNoDuplicatesInRow() has not been implemented yet");
-	return true;
+	var pass = true
+	puzzle.forEach(function(entry){
+		if(hasDuplicates(entry)) pass = false;
+	});
+	return pass;
 }
 
 function ruleNoDuplicatesInColumn(puzzle){
-	console.warn("Function ruleNoDuplicatesInColumn() has not been implemented yet");
-	return true;
+	var pass = true
+	getCols(puzzle).forEach(function(entry){
+		if(hasDuplicates(entry)) pass = false;
+	});
+	console.warn("Function ruleNoDuplicatesInColumn() is not yet fully implemented.");
+	return pass;
 }
 /* END rule function definitions */
